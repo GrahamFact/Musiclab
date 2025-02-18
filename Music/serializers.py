@@ -20,23 +20,28 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class ArtistSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Artist
+        fields = '__all__'
 
 
 class AlbumSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Album
+        fields = '__all__'
 
 
 class GenreSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Genre
+        fields = '__all__'
 
 
 class SongSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Song
+        fields = '__all__'
 
 
 class PlaylistSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Playlist
+        fields = '__all__'
