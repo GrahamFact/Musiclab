@@ -1,6 +1,5 @@
 import requests
 
-# Список артистов
 artists = [
     "Dilo, Matthias Meyer and Patlac",
     "SevenDoors",
@@ -46,10 +45,9 @@ artists = [
     "Hazy"
 ]
 
-# API URL
-api_url = "http://127.0.0.1:8000/api/artist/"  # Измени на реальный адрес API
+api_url = "http://127.0.0.1:8000/api/artist/"
 
-# Проход по списку и отправка запросов
+
 for artist in artists:
     data = {
         "name": artist,
