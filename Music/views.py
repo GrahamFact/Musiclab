@@ -1,59 +1,52 @@
-from django.shortcuts import get_object_or_404
-from django.http import JsonResponse
-from .models import Artist, Album, Song
+from django.contrib.auth.models import Group, User
+from rest_framework import permissions, viewsets
+
+from django.http import HttpResponse
+
+from Music.models import Artist, Album, Genre, Song, Playlist
+import Music.serializers as serializers
 
 
-# Получение списка всех артистов
-def artist_list(request):
-    artists = Artist.objects.all().values()
-    return JsonResponse(list(artists), safe=False)
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = serializers.UserSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
-# Получение деталей одного артиста
-def artist_detail(request, artist_id):
-    artist = get_object_or_404(Artist, id=artist_id)
-    return JsonResponse({
-        "id": artist.id,
-        "name": artist.name,
-        "bio": artist.bio,
-        "birth_date": artist.birth_date,
-        "albums": list(artist.albums.values("id", "title", "release_date")),
-        "songs": list(artist.songs.values("id", "title", "album_id", "release_date"))
-    })
+class GroupViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows groups to be viewed or edited.
+    """
+    queryset = Group.objects.all().order_by('name')
+    serializer_class = serializers.GroupSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
 
-# Получение списка альбомов
-def album_list(request):
-    albums = Album.objects.all().values()
-    return JsonResponse(list(albums), safe=False)
+class ArtistViewSet(viewsets.ModelViewSet):
+    queryset = Artist.objects.all()
+    serializer_class = serializers.ArtistSerializer
+    permission_classes = [permissions.AllowAny]
 
 
-# Получение деталей альбома
-def album_detail(request, album_id):
-    album = get_object_or_404(Album, id=album_id)
-    return JsonResponse({
-        "id": album.id,
-        "title": album.title,
-        "artist": album.artist.name,
-        "release_date": album.release_date,
-        "songs": list(album.songs.values("id", "title", "duration"))
-    })
+class AlbumViewSet(viewsets.ModelViewSet):
+    queryset = Album.objects.all()
+    serializer_class = serializers.AlbumSerializer
+    permission_classes = [permissions.AllowAny]
 
 
-# Получение списка песен
-def song_list(request):
-    songs = Song.objects.all().values()
-    return JsonResponse(list(songs), safe=False)
+class GenreViewSet(viewsets.ModelViewSet):
+    queryset = Genre.objects.all()
+    serializer_class = serializers.GenreSerializer
+    permission_classes = [permissions.AllowAny]
 
 
-# Получение деталей песни
-def song_detail(request, song_id):
-    song = get_object_or_404(Song, id=song_id)
-    return JsonResponse({
-        "id": song.id,
-        "title": song.title,
-        "artist": song.artist.name,
-        "album": song.album.title if song.album else None,
-        "duration": song.duration,
-        "release_date": song.release_date
-    })
+class SongViewSet(viewsets.ModelViewSet):
+    queryset = Song.objects.all()
+    serializer_class = serializers.SongSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class PlaylistViewSet(viewsets.ModelViewSet):
+    queryset = Playlist.objects.all()
+    serializer_class = serializers.PlaylistSerializer
+    permission_classes = [permissions.AllowAny]

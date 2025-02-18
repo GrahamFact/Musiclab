@@ -6,7 +6,6 @@ from Music.models import Artist
 class ArtistModelTest(TestCase):
 
     def test_create_artist(self):
-        """Создание артиста и проверка его данных"""
         artist = Artist.objects.create(
             name="Иван Иванов",
             bio="Известный художник",
@@ -18,7 +17,6 @@ class ArtistModelTest(TestCase):
         self.assertIsNotNone(artist.created_at)
 
     def test_unique_name(self):
-        """Проверка, что поле name уникально"""
         Artist.objects.create(name="Уникальный артист")
         with self.assertRaises(IntegrityError):
             Artist.objects.create(name="Уникальный артист")
